@@ -31,7 +31,7 @@ public struct Config {
       public static var config: (_ cell: UITableViewCell, _ item: String, _ index: Int, _ selected: Bool) -> Void = { cell, item, index, selected in
         guard let cell = cell as? TableCell else { return }
 
-        cell.label.text = item.uppercased()
+        cell.label.text = item
         cell.checkmark.isHidden = !selected
       }
     }
