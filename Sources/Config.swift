@@ -32,7 +32,7 @@ public struct Config {
         guard let cell = cell as? TableCell else { return }
 
         cell.label.text = item
-        cell.checkmark.isHidden = !selected
+        cell.checkmark.isHidden = true
       }
     }
 
