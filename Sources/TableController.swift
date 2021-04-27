@@ -6,19 +6,21 @@ open class TableController: UIViewController, UITableViewDataSource, UITableView
   open var action: ((Int) -> Void)?
   open var dismiss: (() -> Void)?
 
-  public var items: [String] {
+    public var items: [String:[String]] {
     didSet {
       if self.isViewLoaded {
         self.tableView.reloadData()
       }
     }
   }
+    public var keys:[String] = ["Collections", "Retail Sections"]
+    
   var selectedIndex: Int
   lazy var topView: UIView = self.makeTopView()
 
   // MARK: - Initialization
 
-  public required init(items: [String], initialIndex: Int) {
+    public required init(items: [String:[String]], initialIndex: Int) {
     precondition(initialIndex < items.count)
 
     self.items = items
@@ -94,14 +96,25 @@ open class TableController: UIViewController, UITableViewDataSource, UITableView
   // MARK: - DataSource
 
   open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return items.count
+    let key = keys[section]
+    return items[key]?.count ?? 0
   }
 
+    open func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    
+    open func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return keys[section]
+    }
+    
   open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
     let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: Config.List.Cell.type), for: indexPath)
 
-    let item = items[(indexPath as NSIndexPath).row]
+  
+    let key = keys[indexPath.section]
+    let item = items[key]![(indexPath as NSIndexPath).row]
     Config.List.Cell.config(cell, item, (indexPath as NSIndexPath).row, (selectedIndex == (indexPath as NSIndexPath).row))
 
     return cell
