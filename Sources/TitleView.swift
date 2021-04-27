@@ -8,7 +8,7 @@ open class TitleView: UIView {
 
   // MARK: - Initialization
 
-    public init?(navigationController: UINavigationController, title: String, items: [String], initialIndex: Int = 0) {
+    public init?(navigationController: UINavigationController, title: String, items: [String:[String]], initialIndex: Int = 0) {
     super.init(frame: CGRect.zero)
 
     // Button
@@ -26,8 +26,12 @@ open class TitleView: UIView {
 
     self.dropdown = dropdown
 
+    var mergedArr = [String]()
+    for key in items.keys {
+        mergedArr.append(contentsOf: items[key]!)
+    }
     contentController.action = { [weak self, weak dropdown] index in
-      self?.button.label.text = items[index]
+      self?.button.label.text = mergedArr[index]
       self?.action?(index)
       self?.layoutSubviews()
       dropdown?.hide()
